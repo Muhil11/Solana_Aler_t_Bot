@@ -1,13 +1,14 @@
 import requests
 import pandas as pd
 import time
+import os
 from ta.momentum import RSIIndicator
 from ta.trend import EMAIndicator
 from datetime import datetime
 
-# === CONFIG ===
-BOT_TOKEN = "7644989892:AAHuwhXUBo8RH_H2a1gySCfcCh51dYmiwPU"
-CHAT_ID = "1871384395"
+# === CONFIG (now uses environment variables) ===
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 PAIR = "SOLUSDT"
 BASE_INTERVAL = "5m"
 CANDLE_LIMIT = 150
@@ -51,7 +52,6 @@ def check_signals():
         avg_vol = df["volume"].rolling(window=20).mean().iloc[-2]
         vol_spike = df["volume"].iloc[-1] > 2.5 * avg_vol
 
-        # Reverse Engineered Band (deviation from EMA21)
         band_dev = 0.03 * ema21.iloc[-1]
         lower_band = ema21.iloc[-1] - band_dev
         upper_band = ema21.iloc[-1] + band_dev
@@ -93,14 +93,13 @@ def check_signals():
         logs.append(f"[SELL] {datetime.now()} - {now_price}")
         alert_triggered = True
 
-    # --- Save Logs ---
     if alert_triggered:
         with open("alerts_log.txt", "a") as f:
             for line in logs:
                 f.write(line + "\n")
 
-# === LOOP ===
-print("📡 Solana_Aler_t_Bot with Bands & Logs running...")
+# === MAIN LOOP ===
+print("📡 Solana_Aler_t_Bot is running...")
 while True:
     try:
         check_signals()
