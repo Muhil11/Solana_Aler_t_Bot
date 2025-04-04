@@ -6,8 +6,8 @@ from ta.trend import EMAIndicator
 from datetime import datetime
 
 # === CONFIG ===
-BOT_TOKEN = ""
-CHAT_ID = ""
+BOT_TOKEN = "7644989892:AAHuwhXUBo8RH_H2a1gySCfcCh51dYmiwPU"
+CHAT_ID = "1871384395"
 PAIR = "SOLUSDT"
 BASE_INTERVAL = "5m"
 CANDLE_LIMIT = 150
