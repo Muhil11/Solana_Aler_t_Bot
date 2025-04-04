@@ -8,5 +8,5 @@ def home():
     return "Solana_Aler_t_Bot is running!"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # fallback to 10000 if PORT isn't set
+    port = int(os.environ.get("PORT", 10000))  # Get port from env
     app.run(host="0.0.0.0", port=port)
