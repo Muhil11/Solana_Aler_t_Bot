@@ -1,5 +1,5 @@
-# dummy.py
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -8,4 +8,5 @@ def home():
     return "Solana_Aler_t_Bot is running!"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))  # fallback to 10000 if PORT isn't set
+    app.run(host="0.0.0.0", port=port)
