@@ -1,8 +1,3 @@
-Got you! Here's the full `README.md` file content — ready to copy and paste **directly into a `README.md` file**:
-
----
-
-```markdown
 # 📡 Solana_Aler_t_Bot
 
 An advanced Telegram bot that sends **real-time trading signals** for **SOL/USDT** using technical indicators like RSI, EMA crossover, volume spikes, and dynamic support/resistance bands. Built with Python 🐍 and designed to run 24/7.
@@ -104,5 +99,3 @@ Made with ❤️ to help crypto traders stay informed automatically.
 ---
 
 ```
-
-Let me know if you'd like a version for **copy-pasting directly from command line** again!
