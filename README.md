@@ -1,3 +1,8 @@
+Got you! Here's the full `README.md` file content — ready to copy and paste **directly into a `README.md` file**:
+
+---
+
+```markdown
 # 📡 Solana_Aler_t_Bot
 
 An advanced Telegram bot that sends **real-time trading signals** for **SOL/USDT** using technical indicators like RSI, EMA crossover, volume spikes, and dynamic support/resistance bands. Built with Python 🐍 and designed to run 24/7.
@@ -34,31 +39,27 @@ An advanced Telegram bot that sends **real-time trading signals** for **SOL/USDT
 
 1. Clone the repo:
 
-```
-bash
+```bash
 git clone https://github.com/yourusername/Solana_Aler_t_Bot.git
 cd Solana_Aler_t_Bot
 ```
 
 2. Install dependencies:
 
-```
-bash
+```bash
 pip install -r requirements.txt
 ```
 
 3. Add your **Telegram Bot Token** and **Chat ID** in `solana_alert_bot.py`:
 
-```
-python
+```python
 BOT_TOKEN = "your_token"
 CHAT_ID = "your_chat_id"
 ```
 
 4. Run the bot:
 
-```
-bash
+```bash
 python solana_alert_bot.py
 ```
 
@@ -103,3 +104,5 @@ Made with ❤️ to help crypto traders stay informed automatically.
 ---
 
 ```
+
+Let me know if you'd like a version for **copy-pasting directly from command line** again!
