@@ -1,42 +1,75 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
-CSV_FILE = "solana_metrics_log.csv"
+import time
+import requests
 
 st.set_page_config(page_title="Solana Alert Dashboard", layout="wide")
-st.title("📊 Solana Realtime Metrics Dashboard")
+st.title("📊 Solana Real-Time Metrics Dashboard")
 
-# === Load Data ===
+# === Auto-refresh ===
+st.caption("⏱ Auto-refreshing every 30 seconds")
+st.button("🔄 Refresh Data")
+time.sleep(30)
+st.experimental_rerun()
+
+# === Function to Get SOL Price ===
+def get_sol_price():
+    try:
+        url = "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+        data = requests.get(url).json()
+        return data["solana"]["usd"]
+    except:
+        return None
+
+# === Load Logged CSV Data ===
 try:
-    df = pd.read_csv(CSV_FILE, names=["timestamp", "TPS", "Block", "BTC_DOM", "BTC_HASH"], parse_dates=["timestamp"])
-    df = df.dropna()
-except FileNotFoundError:
-    st.error("CSV log file not found.")
+    df = pd.read_csv("solana_metrics_log.csv", names=["Time", "TPS", "Block", "BTC Dominance", "BTC Hashrate"])
+    df["Time"] = pd.to_datetime(df["Time"])
+    df = df.sort_values("Time")
+except Exception as e:
+    st.error(f"Failed to load data: {e}")
     st.stop()
 
-# === Latest Metrics ===
+# === Show Latest Metrics ===
 latest = df.iloc[-1]
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("⚡ TPS", latest["TPS"])
-col2.metric("📦 Block Height", int(latest["Block"]))
-col3.metric("🟠 BTC Dominance", f"{latest['BTC_DOM']:.2f}%")
-col4.metric("🔧 BTC Hashrate", f"{latest['BTC_HASH']:.2f} TH/s")
+st.metric("🔥 Current TPS", latest["TPS"])
+st.metric("📦 Latest Block Height", int(latest["Block"]))
+st.metric("🪙 BTC Dominance", f"{latest['BTC Dominance']:.2f}%")
+st.metric("⚡ BTC Hashrate", f"{latest['BTC Hashrate']:.2f} TH/s")
 
-# === Line Chart ===
-st.subheader("TPS Over Time")
-fig, ax = plt.subplots()
-ax.plot(df["timestamp"], df["TPS"], label="TPS", color="blue")
-ax.set_xlabel("Time")
-ax.set_ylabel("TPS")
-ax.grid(True)
-st.pyplot(fig)
+# === Line Charts ===
+st.subheader("📈 Historical Metrics")
 
-# === Alert Section ===
-st.subheader("🔔 Alerts")
-avg_tps = df["TPS"].tail(20).mean()
-if latest["TPS"] < avg_tps * 0.85:
-    st.error(f"⚠️ TPS Drop Detected! Current: {latest['TPS']}, Avg: {avg_tps:.2f}")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("Solana TPS Over Time")
+    st.line_chart(df.set_index("Time")["TPS"])
+
+with col2:
+    st.write("BTC Dominance Over Time")
+    st.line_chart(df.set_index("Time")["BTC Dominance"])
+
+st.write("BTC Hashrate Over Time")
+st.line_chart(df.set_index("Time")["BTC Hashrate"])
+
+# === SOL Price + Alerts ===
+st.subheader("🔔 Price Alerts + Zones")
+
+sol_price = get_sol_price()
+if sol_price:
+    st.info(f"💰 Current SOL Price: **${sol_price}**")
+
+    # Zone Logic
+    supply_zone = (160, 180)
+    demand_zone = (100, 120)
+
+    if supply_zone[0] <= sol_price <= supply_zone[1]:
+        st.warning(f"⚠️ **Supply Zone Alert!** Price is in resistance range (${supply_zone[0]} - ${supply_zone[1]})")
+    elif demand_zone[0] <= sol_price <= demand_zone[1]:
+        st.success(f"📉 **Demand Zone Alert!** Price is in support range (${demand_zone[0]} - ${demand_zone[1]})")
+    else:
+        st.write("✅ Price is in a neutral zone.")
 else:
-    st.success("✅ TPS is within normal range.")
-
+    st.error("❌ Failed to fetch SOL price.")
