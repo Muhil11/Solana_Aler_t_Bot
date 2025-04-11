@@ -35,7 +35,7 @@ An advanced Telegram bot that sends **real-time trading signals** for **SOL/USDT
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/yourusername/Solana_Aler_t_Bot.git
+git clone https://github.com/Muhil11/Solana_Aler_t_Bot.git
 cd Solana_Aler_t_Bot
 ```
 
