@@ -89,7 +89,8 @@ Price: $142.35
 📊 Volume Spike
 📈 Touched Lower Band: 141.88
 ```
-
+⚠️ Important Notes
+Always apply proper risk management when using this strategy, Only for education purpose.
 ---
 
 ## 🙌 Credits
